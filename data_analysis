@@ -1,0 +1,113 @@
+CREATE DATABASE Pizza_DB;
+
+SELECT *
+FROM pizza_sales;
+
+-- A. KPI's
+
+-- 1. Total Revenue 
+SELECT SUM(total_price) AS 'Total Revenue'
+FROM pizza_sales;
+
+-- 2. Average Order Value
+SELECT (SUM(total_price) / COUNT(DISTINCT(order_id)))  AS 'Avg Order Value'
+FROM pizza_sales;
+
+-- 3. Total Pizzas Sold 
+SELECT SUM(quantity) AS 'Total Pizza Sold'
+FROM pizza_sales;
+
+-- 4. Total Orders
+SELECT COUNT(DISTINCT(order_id)) AS 'Total Orders'
+FROM pizza_sales;
+
+-- 5. Average Pizzas Per Order
+SELECT CAST(CAST(SUM(quantity) AS DECIMAL(10,2)) / 
+CAST(COUNT(DISTINCT order_id) AS DECIMAL(10,2)) AS DECIMAL(10,2))
+AS 'Avg Pizzas Per Order'
+FROM pizza_sales;
+
+-- B. Hourly Trend for Total Pizzas Sold
+SELECT HOUR(order_time) AS 'Order Hours', SUM(quantity) AS 'Total Pizzas Sold'
+FROM pizza_sales
+GROUP BY HOUR(order_time)
+ORDER BY HOUR(order_time);
+
+-- C. Weekly Trend For Orders
+SELECT 
+	YEARWEEK(order_date_converted, 3) MOD 100 AS Week_Number,
+    YEARWEEK(order_date_converted, 3) DIV 100 AS Year,
+    COUNT(DISTINCT order_id) AS Total_orders
+FROM pizza_sales
+GROUP BY Week_Number, Year
+ORDER BY Week_Number, Year;
+
+-- D. Percentage of Sales by Pizza Category
+SELECT 
+	pizza_category, 
+	CAST(SUM(total_price) AS DECIMAL(10,2)) AS 'Total Revenue',
+	CAST(SUM(total_price) * 100 / (SELECT SUM(total_price) 
+    FROM pizza_sales WHERE MONTH(order_date_converted) = 1) AS DECIMAL(10,2)) AS Percentage
+FROM pizza_sales
+WHERE MONTH(order_date_converted) = 1
+GROUP BY pizza_category;
+
+-- E. Percentage of Sales by Pizza Size
+SELECT 
+	pizza_size, 
+	CAST(SUM(total_price) AS DECIMAL(10,2)) AS 'Total Revenue',
+	CAST(SUM(total_price) * 100 / (SELECT SUM(total_price) 
+    FROM pizza_sales WHERE QUARTER(order_date_converted) = 1) AS DECIMAL(10,2)) AS Percentage
+FROM pizza_sales
+WHERE QUARTER(order_date_converted) = 1
+GROUP BY pizza_size
+ORDER BY Percentage DESC;
+
+-- F. Total Pizzas Sold by Pizza Category 
+SELECT pizza_category, SUM(quantity) as Total_Quantity_Sold
+FROM pizza_sales
+WHERE MONTH(order_date_converted) = 2
+GROUP BY pizza_category
+ORDER BY Total_Quantity_Sold DESC;
+
+-- G. Top 5 Pizzas by Revenue
+SELECT pizza_name, SUM(total_price) AS Total_Revenue
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Revenue DESC
+LIMIT 5;
+
+-- H. Bottom 5 Pizzas
+SELECT pizza_name, SUM(total_price) AS Total_Revenue
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Revenue
+LIMIT 5;
+
+-- I. Top 5 Pizzas by Quantity
+SELECT pizza_name, SUM(quantity) AS Total_Quantity
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Quantity DESC
+LIMIT 5;
+
+-- J. Bottom 5 Pizzas by Quanity
+SELECT pizza_name, SUM(quantity) AS Total_Quantity
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Quantity 
+LIMIT 5;
+
+-- K. Top 5 Pizzas by Total Orders
+SELECT pizza_name, COUNT(DISTINCT(order_id)) AS Total_Orders
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Orders DESC
+LIMIT 5;
+
+-- L. Bottom 5 Pizzas by Total Orders
+SELECT pizza_name, COUNT(DISTINCT(order_id)) AS Total_Orders
+FROM pizza_sales
+GROUP BY pizza_name
+ORDER BY Total_Orders 
+LIMIT 5;
