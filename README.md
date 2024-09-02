@@ -1,6 +1,6 @@
 # Pizza Sales Analysis and Dashboard
 
-This project involves the analysis of pizza sales data using SQL and visualizing the results with a Tableau dashboard. The goal is to gain insights into sales performance, customer preferences, and trends, which can inform business decisions related to menu optimization and marketing strategies.
+This project involves analyzing pizza sales data using SQL and visualizing the results with a Tableau dashboard. The goal is to gain insights into sales performance, customer preferences, and trends, which can inform business decisions related to menu optimization and marketing strategies.
 
 Project Components
 
@@ -35,8 +35,9 @@ A Tableau dashboard was created to visualize the results of the SQL analysis. Th
 
 4. Key Insights
 - Peak sales hours, popular pizza categories, and sizes were identified, helping to optimize inventory and marketing strategies.
-- The analysis of top and bottom-performing pizzas provided insights into customer preferences, allowing for better menu          planning.
+- Analyzing top and bottom-performing pizzas provided insights into customer preferences, allowing for better menu          planning.
 - Understanding average order values and pizzas per order can aid in pricing strategies and promotional offers.
 
 Conclusion:
-This project demonstrates how SQL and Tableau can be effectively used together to analyze sales data and derive actionable insights. The visualization of data through a dashboard not only enhances understanding but also aids in decision-making processes for business growth and customer satisfaction.
+
+This project demonstrates how SQL and Tableau can effectively analyze sales data and derive actionable insights. Visualizing data through a dashboard not only enhances understanding but also aids in decision-making processes for business growth and customer satisfaction.
